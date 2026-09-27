@@ -1,0 +1,115 @@
+{
+  "name": "lore-scm",
+  "displayName": "Lore SCM (Community)",
+  "description": "Unofficial, community-maintained source control integration for the Lore version control system. Not affiliated with or endorsed by Epic Games.",
+  "version": "0.1.0",
+  "publisher": "alsimoes",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alsimoes/lore-for-visual-studio-code.git"
+  },
+  "categories": ["SCM Providers"],
+  "keywords": ["lore", "vcs", "scm", "epic", "unreal"],
+  "engines": {
+    "vscode": "^1.137.0",
+    "node": ">=20"
+  },
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "workspaceContains:.lore/config.toml",
+    "workspaceContains:*/.lore/config.toml",
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Lore runs native code and reads repository configuration."
+    },
+    "virtualWorkspaces": false
+  },
+  "extensionKind": ["workspace"],
+  "contributes": {
+    "commands": [
+      {
+        "command": "loreScm.showVersion",
+        "title": "Show Version",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.showOutput",
+        "title": "Show Output",
+        "category": "Lore SCM"
+      }
+    ],
+    "configuration": {
+      "title": "Lore SCM",
+      "properties": {
+        "loreScm.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Lore source control integration."
+        },
+        "loreScm.backend": {
+          "type": "string",
+          "enum": ["auto", "sdk", "cli"],
+          "default": "auto",
+          "description": "Which backend to use to talk to Lore."
+        },
+        "loreScm.path": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Path to the lore executable, used by the CLI backend."
+        },
+        "loreScm.libraryPath": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Override for LORE_LIB_PATH, pointing at an installed lorelib."
+        },
+        "loreScm.logLevel": {
+          "type": "string",
+          "enum": ["off", "error", "warn", "info", "debug", "trace"],
+          "default": "info",
+          "description": "Verbosity of the Lore SCM output channel and library logging."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "build:prod": "node esbuild.mjs --production",
+    "watch": "node esbuild.mjs --watch",
+    "lint": "eslint src test scripts",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "pretest-integration": "tsc -p . --outDir out",
+    "test:integration": "npm run pretest-integration && vscode-test",
+    "package:local": "npm run build:prod && vsce package --target $(node scripts/vsce-target.mjs) --out dist-vsix/",
+    "install:local": "node scripts/install-local.mjs",
+    "vscode:prepublish": "npm run build:prod"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.17.9",
+    "@types/vscode": "^1.137.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "@lore-vcs/sdk": "0.10.0"
+  }
+}
