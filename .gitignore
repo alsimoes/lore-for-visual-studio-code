@@ -5,3 +5,4 @@ dist-vsix/
 *.vsix
 *.log
 .vscode-test/
+coverage/

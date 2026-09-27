@@ -41,6 +41,33 @@
         "command": "loreScm.showOutput",
         "title": "Show Output",
         "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.refresh",
+        "title": "Refresh",
+        "category": "Lore SCM",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "loreScm.rescan",
+        "title": "Rescan (full filesystem scan)",
+        "category": "Lore SCM",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "loreScm.openFile",
+        "title": "Open File",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.openHEADFile",
+        "title": "Open File (HEAD)",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.openChange",
+        "title": "Open Change",
+        "category": "Lore SCM"
       }
     ],
     "configuration": {
@@ -72,8 +99,109 @@
           "enum": ["off", "error", "warn", "info", "debug", "trace"],
           "default": "info",
           "description": "Verbosity of the Lore SCM output channel and library logging."
+        },
+        "loreScm.autoRepositoryDetection": {
+          "type": ["boolean", "string"],
+          "enum": [true, false, "subFolders", "openEditors"],
+          "default": true,
+          "description": "Controls whether Lore repositories are automatically detected in the workspace."
+        },
+        "loreScm.repositoryScanMaxDepth": {
+          "type": "number",
+          "default": 1,
+          "description": "How many folder levels below a workspace folder to search for nested Lore working trees."
+        },
+        "loreScm.repositoryScanIgnoredFolders": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["node_modules", ".git"],
+          "description": "Folder names to skip while searching for nested Lore working trees."
+        },
+        "loreScm.scanOnOpen": {
+          "type": "string",
+          "enum": ["auto", "always", "never"],
+          "default": "auto",
+          "description": "Whether to run a full filesystem scan when a repository is opened. \"auto\" skips it if the last scan of that repository was slow."
+        },
+        "loreScm.scanSlowThresholdMs": {
+          "type": "number",
+          "default": 10000,
+          "description": "Above this duration, a repository's last scan is considered slow (used by scanOnOpen: \"auto\")."
+        },
+        "loreScm.autorefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Refresh a repository's status when the window regains focus, if its last refresh is stale."
+        },
+        "loreScm.statusLimit": {
+          "type": "number",
+          "default": 10000,
+          "description": "Maximum number of changes to show in the Source Control view before truncating."
+        },
+        "loreScm.countBadge": {
+          "type": "string",
+          "enum": ["all", "tracked", "off"],
+          "default": "all",
+          "description": "Controls the Source Control count badge: all changes, only tracked changes, or off."
+        },
+        "loreScm.openDiffOnClick": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open a diff (rather than the plain file) when clicking a change in the Source Control view."
+        },
+        "loreScm.quickDiffMaxSize": {
+          "type": "number",
+          "default": 5242880,
+          "description": "Files larger than this (in bytes) don't get quick diff gutter markers."
         }
       }
+    },
+    "colors": [
+      {
+        "id": "loreScmDecoration.modifiedResourceForeground",
+        "description": "Color for modified Lore resources.",
+        "defaults": { "light": "gitDecoration.modifiedResourceForeground", "dark": "gitDecoration.modifiedResourceForeground", "highContrast": "gitDecoration.modifiedResourceForeground" }
+      },
+      {
+        "id": "loreScmDecoration.addedResourceForeground",
+        "description": "Color for added Lore resources.",
+        "defaults": { "light": "gitDecoration.addedResourceForeground", "dark": "gitDecoration.addedResourceForeground", "highContrast": "gitDecoration.addedResourceForeground" }
+      },
+      {
+        "id": "loreScmDecoration.untrackedResourceForeground",
+        "description": "Color for untracked Lore resources.",
+        "defaults": { "light": "gitDecoration.untrackedResourceForeground", "dark": "gitDecoration.untrackedResourceForeground", "highContrast": "gitDecoration.untrackedResourceForeground" }
+      },
+      {
+        "id": "loreScmDecoration.deletedResourceForeground",
+        "description": "Color for deleted Lore resources.",
+        "defaults": { "light": "gitDecoration.deletedResourceForeground", "dark": "gitDecoration.deletedResourceForeground", "highContrast": "gitDecoration.deletedResourceForeground" }
+      },
+      {
+        "id": "loreScmDecoration.renamedResourceForeground",
+        "description": "Color for renamed or copied Lore resources.",
+        "defaults": { "light": "gitDecoration.renamedResourceForeground", "dark": "gitDecoration.renamedResourceForeground", "highContrast": "gitDecoration.renamedResourceForeground" }
+      },
+      {
+        "id": "loreScmDecoration.conflictingResourceForeground",
+        "description": "Color for Lore resources with merge conflicts.",
+        "defaults": { "light": "gitDecoration.conflictingResourceForeground", "dark": "gitDecoration.conflictingResourceForeground", "highContrast": "gitDecoration.conflictingResourceForeground" }
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        { "command": "loreScm.openFile", "when": "false" },
+        { "command": "loreScm.openHEADFile", "when": "false" },
+        { "command": "loreScm.openChange", "when": "false" }
+      ],
+      "scm/title": [
+        { "command": "loreScm.refresh", "when": "scmProvider == loreScm", "group": "navigation" },
+        { "command": "loreScm.rescan", "when": "scmProvider == loreScm", "group": "navigation" }
+      ],
+      "scm/resourceState/context": [
+        { "command": "loreScm.openFile", "when": "scmProvider == loreScm", "group": "navigation" },
+        { "command": "loreScm.openHEADFile", "when": "scmProvider == loreScm", "group": "navigation" }
+      ]
     }
   },
   "scripts": {
@@ -84,10 +212,11 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "pretest-integration": "tsc -p . --outDir out",
     "test:integration": "npm run pretest-integration && vscode-test",
-    "package:local": "npm run build:prod && vsce package --target $(node scripts/vsce-target.mjs) --out dist-vsix/",
+    "package:local": "node scripts/package-local.mjs",
     "install:local": "node scripts/install-local.mjs",
     "vscode:prepublish": "npm run build:prod"
   },
@@ -99,6 +228,7 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.1",
+    "@vitest/coverage-v8": "^2.1.8",
     "esbuild": "^0.24.2",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
