@@ -1,4 +1,4 @@
-import type { FileChange, ChangeKind, RevisionState, StatusSnapshot } from './model.js';
+import type { CommitResult, FileChange, ChangeKind, RevisionState, StatusSnapshot, SyncResult } from './model.js';
 
 /**
  * A Lore event as produced by the SDK's `.collectAsync()`/callback path: `{ tag, tagName, data }`.
@@ -132,4 +132,35 @@ export function mapStatusEvents(events: LoreRawEvent[]): StatusSnapshot {
   }
 
   return { state, changes, truncated: false, takenAt: Date.now() };
+}
+
+/** Builds a CommitResult from the raw event stream of a `revisionCommit`/`revisionAmend` call. */
+export function mapCommitResult(events: LoreRawEvent[]): CommitResult {
+  const revisionEvent = events.find((e) => e.tagName === 'revisionCommitRevision');
+  const data = revisionEvent?.data as { revision: string; revisionNumber: number } | undefined;
+  if (!data) {
+    throw new Error('revisionCommit did not emit a revisionCommitRevision event');
+  }
+  return { revision: data.revision, revisionNumber: data.revisionNumber };
+}
+
+/** Builds a SyncResult from the raw event stream of a `revisionSync` call. */
+export function mapSyncResult(events: LoreRawEvent[]): SyncResult {
+  const revisionEvent = events.find((e) => e.tagName === 'revisionSyncRevision');
+  const data = revisionEvent?.data as
+    | { revision: string; revisionNumber: number; flagMerge: boolean; flagConflict: boolean }
+    | undefined;
+  if (!data) {
+    throw new Error('revisionSync did not emit a revisionSyncRevision event');
+  }
+  const conflictedPaths = events
+    .filter((e) => e.tagName === 'branchMergeConflictFile')
+    .map((e) => (e.data as { path: string }).path);
+  return {
+    revision: data.revision,
+    revisionNumber: data.revisionNumber,
+    merged: data.flagMerge,
+    hasConflicts: data.flagConflict,
+    conflictedPaths,
+  };
 }

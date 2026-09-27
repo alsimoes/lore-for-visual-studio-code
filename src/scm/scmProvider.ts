@@ -21,10 +21,11 @@ export class LoreScmProvider implements vscode.Disposable {
   constructor(readonly repo: Repository) {
     this.sourceControl = vscode.scm.createSourceControl('loreScm', 'Lore', repo.rootUri);
     this.sourceControl.quickDiffProvider = new LoreQuickDiffProvider(repo);
-
-    // Commit support (and enabling this input box) arrives in Phase 2.
-    this.sourceControl.inputBox.enabled = false;
-    this.sourceControl.inputBox.placeholder = 'Commit support arrives in Phase 2';
+    this.sourceControl.acceptInputCommand = {
+      command: 'loreScm.commit',
+      title: 'Commit',
+      arguments: [this.sourceControl],
+    };
 
     this.mergeGroup = this.sourceControl.createResourceGroup('merge', 'Merge Changes');
     this.mergeGroup.hideWhenEmpty = true;
@@ -78,6 +79,8 @@ export class LoreScmProvider implements vscode.Disposable {
 
   private updateStatusBar(snapshot: StatusSnapshot): void {
     const state = snapshot.state;
+    this.sourceControl.inputBox.placeholder = `Message (Ctrl+Enter to commit on "${state.branchName}")`;
+
     const commands: vscode.Command[] = [
       {
         title: `$(git-branch) ${state.branchName}`,
@@ -85,21 +88,25 @@ export class LoreScmProvider implements vscode.Disposable {
         tooltip: `Lore branch: ${state.branchName} (#${state.revisionNumber})`,
       },
     ];
-    if (state.remoteAvailable) {
-      const parts: string[] = [];
+    if (!state.remoteAvailable) {
+      this.sourceControl.statusBarCommands = commands;
+      return;
+    }
+    if (state.remoteBranchExists) {
+      const parts: string[] = ['$(sync)'];
       if (state.isRemoteAhead) {
         parts.push('$(arrow-down)');
       }
       if (state.isLocalAhead) {
         parts.push('$(arrow-up)');
       }
-      if (parts.length > 0) {
-        commands.push({
-          title: parts.join(' '),
-          command: 'loreScm.showOutput',
-          tooltip: 'Remote state (push/sync arrive in Phase 2)',
-        });
-      }
+      commands.push({
+        title: parts.join(' '),
+        command: 'loreScm.syncAndPush',
+        tooltip: 'Sync and push',
+      });
+    } else if (state.isLocalAhead) {
+      commands.push({ title: 'Publish Branch', command: 'loreScm.publishBranch', tooltip: 'Publish this branch' });
     }
     this.sourceControl.statusBarCommands = commands;
   }

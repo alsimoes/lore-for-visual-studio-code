@@ -5,11 +5,13 @@ import { config } from './config.js';
 import { createBackend } from './lore/backendFactory.js';
 import type { LoreBackend } from './lore/backend.js';
 import { RepositoryManager } from './repository/repositoryManager.js';
+import type { Repository } from './repository/repository.js';
 import { LoreFileSystemProvider } from './scm/loreFileSystemProvider.js';
 import { LORE_SCM_SCHEME } from './scm/loreUri.js';
 import { LoreDecorationProvider } from './scm/decorations.js';
 import { LoreScmProvider } from './scm/scmProvider.js';
 import { registerCommands } from './commands/index.js';
+import type { InputBoxLookup } from './commands/commitCommands.js';
 
 async function updateHasRepositoryContext(repos: RepositoryManager): Promise<void> {
   await vscode.commands.executeCommand('setContext', 'loreScm.hasRepository', repos.all.length > 0);
@@ -19,7 +21,7 @@ function activateRepositorySupport(
   context: vscode.ExtensionContext,
   backend: LoreBackend,
   log: LogOutputChannel,
-): RepositoryManager {
+): { repos: RepositoryManager; getInputBox: InputBoxLookup } {
   const repos = new RepositoryManager(backend, context.workspaceState, log);
   context.subscriptions.push(repos);
 
@@ -52,7 +54,8 @@ function activateRepositorySupport(
     { dispose: () => scmProviders.forEach((provider) => provider.dispose()) },
   );
 
-  return repos;
+  const getInputBox: InputBoxLookup = (repo: Repository) => scmProviders.get(repo.root)?.sourceControl.inputBox;
+  return { repos, getInputBox };
 }
 
 async function loadBackend(log: LogOutputChannel): Promise<LoreBackend | undefined> {
@@ -82,17 +85,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   if (!config.enabled) {
     log.info('loreScm.enabled is false; not activating repository support');
-    registerCommands(context, undefined, undefined, log);
+    registerCommands(context, undefined, undefined, log, () => undefined);
     return;
   }
 
   const backend = await loadBackend(log);
-  const repos = backend ? activateRepositorySupport(context, backend, log) : undefined;
-  if (repos) {
-    await repos.scan();
+  const activation = backend ? activateRepositorySupport(context, backend, log) : undefined;
+  if (activation) {
+    await activation.repos.scan();
   }
 
-  registerCommands(context, repos, backend, log);
+  registerCommands(context, activation?.repos, backend, log, activation?.getInputBox ?? (() => undefined));
 
   log.info('Lore SCM activated');
 }

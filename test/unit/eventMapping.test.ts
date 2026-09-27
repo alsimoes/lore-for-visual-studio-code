@@ -2,9 +2,11 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
+  mapCommitResult,
   mapFileChange,
   mapRevisionState,
   mapStatusEvents,
+  mapSyncResult,
   type LoreRawEvent,
 } from '../../src/lore/eventMapping.js';
 
@@ -229,5 +231,57 @@ describe('mapStatusEvents', () => {
     expect(() => mapStatusEvents([{ tag: 2, tagName: 'complete', data: {} }])).toThrow(
       /repositoryStatusRevision/,
     );
+  });
+});
+
+describe('mapCommitResult', () => {
+  it('extracts the revision hash and number from a real commit event stream', () => {
+    const result = mapCommitResult(loadFixture('s2-commit-baseline'));
+    expect(result.revisionNumber).toBe(1);
+    expect(result.revision).toMatch(/^[0-9a-f]+$/);
+  });
+
+  it('throws when there is no revisionCommitRevision event', () => {
+    expect(() => mapCommitResult([{ tag: 2, tagName: 'complete', data: {} }])).toThrow(
+      /revisionCommitRevision/,
+    );
+  });
+});
+
+describe('mapSyncResult', () => {
+  it('reports a clean fast-forward sync with no conflicts', () => {
+    const result = mapSyncResult([
+      {
+        tag: 0,
+        tagName: 'revisionSyncRevision',
+        data: { revision: 'abc123', revisionNumber: 3, flagMerge: false, flagConflict: false },
+      },
+    ]);
+    expect(result).toEqual({
+      revision: 'abc123',
+      revisionNumber: 3,
+      merged: false,
+      hasConflicts: false,
+      conflictedPaths: [],
+    });
+  });
+
+  it('collects conflicted paths from branchMergeConflictFile events', () => {
+    const result = mapSyncResult([
+      { tag: 0, tagName: 'branchMergeConflictFile', data: { path: 'a.txt' } },
+      { tag: 0, tagName: 'branchMergeConflictFile', data: { path: 'b.txt' } },
+      {
+        tag: 0,
+        tagName: 'revisionSyncRevision',
+        data: { revision: 'def456', revisionNumber: 0, flagMerge: true, flagConflict: true },
+      },
+    ]);
+    expect(result.hasConflicts).toBe(true);
+    expect(result.merged).toBe(true);
+    expect(result.conflictedPaths).toEqual(['a.txt', 'b.txt']);
+  });
+
+  it('throws when there is no revisionSyncRevision event', () => {
+    expect(() => mapSyncResult([{ tag: 2, tagName: 'complete', data: {} }])).toThrow(/revisionSyncRevision/);
   });
 });

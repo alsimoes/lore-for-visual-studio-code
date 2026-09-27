@@ -359,3 +359,48 @@ reasons** — don't have the extension or its test suite start one.
 12. **§6.12**: locks are more advisory than described — any identity can silently steal-acquire or
     release another identity's lock, with no ownership check observed. The extension's own
     confirmation dialogs are the only real protection, not a courtesy on top of enforcement.
+
+## Phase 2 addendum — critical: same-process status blindness, and rename ordering
+
+Two more load-bearing findings surfaced while implementing Phase 2 (core write workflow), verified
+directly against the SDK with throwaway repos (both offline and on `lore://argoneon:41337`):
+
+**`repositoryStatus` without `staged: true` cannot see anything marked dirty/staged earlier in the
+*same process*.** Reproduced repeatedly and from multiple angles: `fileDirty('a.txt')` followed by
+`repositoryStatus({})` (no scan) in the same Node process returns **zero** file events for `a.txt`
+— not even the file that a `status({scan:true})` call had *just* discovered. A brand-new process
+(a separate CLI invocation, or `fileInfo`'s per-path lookup) sees the same on-disk state correctly,
+so the dirty flag genuinely is persisted; only the calling process's own in-memory status
+computation is stale, and no amount of waiting (tested up to 3s), retrying, `checkDirty`,
+`storeKeepAlive`, or `noGc` fixes it. Passing **`staged: true`** on the `repositoryStatus` call
+does fix it, reliably, across many sequential dirty-and-restatus rounds. **`SdkBackend.status()`
+now always passes `staged: true`** (src/lore/sdkBackend.ts) — this is not optional and not just for
+showing staged info; without it, the extension's whole "edit a file, see it in Changes" mechanism
+is broken for the lifetime of the extension host process. This should have been caught in Phase 0's
+own S2 spike (two of that phase's own fixtures, `s2-status-noscan-after-scan.json` and
+`s2-status-noscan-after-file-dirty.json`, already showed zero file events — a miss during Phase 0's
+review, corrected here).
+
+**`fileStageMove` must be called before anything calls `fileDirtyMove` on the same path**, not
+after. Calling `fileDirtyMove(from, to)` first (to live-track a rename as dirty, per §6.3's
+original design) then `fileStageMove(from, to)` fails with `Lore error 83: Node not found` /
+`"Path a.txt does not exist in repository"` — once `fileDirtyMove` records the move, `fileStageMove`
+can no longer find the old path to stage from. Every alternative was tried and failed silently or
+loudly: plain `fileStage([toPath])`, `fileStage([fromPath, toPath])`, `fileStage(['.'])`, each with
+and without `scan: true` — all report `totalCount: 0` (a true no-op), not an error. The only
+working sequence is `fileStageMove` called **first**, with no prior `fileDirtyMove` on that path.
+**Consequence for design:** a rename detected via `vscode.workspace.onDidRenameFiles` is now staged
+immediately (`Repository.stageMove`, src/repository/repository.ts), not dirty-tracked for later
+staging via `DirtyTracker` - `DirtyTracker` no longer has a `markMoved`/`notifyMoved` concept at
+all, and `LoreBackend.markMoved`/`fileDirtyMove` were removed from the backend entirely as dead
+(and actively harmful) code. This means a rename in the Explorer shows up **already staged**,
+which is a deliberate, SDK-driven difference from Git's default unstaged-rename display, not a bug
+— it should be called out in the command/tooltip text per §11.7.
+
+**Follow-up not yet verified**: in one round-trip test, pushing against a remote that had moved
+failed with `errorName: undefined, code: -1` (a generic internal error) rather than the expected
+`BranchAdvanced` (41). `commands/remoteCommands.ts`'s "Sync & Push" prompt is keyed specifically
+off `errorName === 'BranchAdvanced'`, so it may not trigger for every "remote moved" case — it
+falls back to a plain error message instead, which is safe but not the intended UX. Needs a
+dedicated repro (push, have another clone push first, push again) before Phase 2's PR is
+considered fully verified.

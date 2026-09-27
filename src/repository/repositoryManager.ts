@@ -100,7 +100,11 @@ export class RepositoryManager implements vscode.Disposable {
     );
   }
 
-  /** On window focus, refresh any repository whose last refresh is older than 5s (§6.4). */
+  /**
+   * On window focus, refresh any repository whose last refresh is older than 5s (§6.4). Uses
+   * checkDirty so this single mechanism also covers §6.3 step 3's "verify dirty flags on focus"
+   * safety net, rather than running two separate status calls.
+   */
   private refreshStaleOnFocus(): void {
     if (!config.autorefresh) {
       return;
@@ -108,7 +112,7 @@ export class RepositoryManager implements vscode.Disposable {
     const now = Date.now();
     for (const repo of this.repositories.values()) {
       if (now - repo.lastRefreshedAt >= FOCUS_REFRESH_MIN_AGE_MS) {
-        void repo.refresh();
+        void repo.refresh({ checkDirty: true });
       }
     }
   }

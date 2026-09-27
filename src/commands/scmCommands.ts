@@ -2,21 +2,11 @@ import { join } from 'node:path';
 import * as vscode from 'vscode';
 import type { FileChange } from '../lore/model.js';
 import type { RepositoryManager } from '../repository/repositoryManager.js';
-import type { Repository } from '../repository/repository.js';
 import type { ResourceGroupId } from '../repository/statusModel.js';
 import { config } from '../config.js';
 import { toLoreUri } from '../scm/loreUri.js';
 import type { LoreResource } from '../scm/resource.js';
-
-function resolveRepository(arg: unknown, repos: RepositoryManager): Repository | undefined {
-  if (arg && typeof arg === 'object' && 'rootUri' in arg) {
-    const rootUri = (arg as vscode.SourceControl).rootUri;
-    if (rootUri) {
-      return repos.getRepositoryForUri(rootUri);
-    }
-  }
-  return undefined;
-}
+import { resolveRepository } from './commandUtils.js';
 
 async function refreshCommand(
   repos: RepositoryManager | undefined,

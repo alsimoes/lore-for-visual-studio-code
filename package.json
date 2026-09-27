@@ -68,6 +68,90 @@
         "command": "loreScm.openChange",
         "title": "Open Change",
         "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.stage",
+        "title": "Stage Changes",
+        "category": "Lore SCM",
+        "icon": "$(add)"
+      },
+      {
+        "command": "loreScm.stageAll",
+        "title": "Stage All Changes",
+        "category": "Lore SCM",
+        "icon": "$(add)"
+      },
+      {
+        "command": "loreScm.unstage",
+        "title": "Unstage Changes",
+        "category": "Lore SCM",
+        "icon": "$(remove)"
+      },
+      {
+        "command": "loreScm.unstageAll",
+        "title": "Unstage All Changes",
+        "category": "Lore SCM",
+        "icon": "$(remove)"
+      },
+      {
+        "command": "loreScm.discard",
+        "title": "Discard Changes",
+        "category": "Lore SCM",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "loreScm.discardAll",
+        "title": "Discard All Changes",
+        "category": "Lore SCM",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "loreScm.commit",
+        "title": "Commit",
+        "category": "Lore SCM",
+        "icon": "$(check)"
+      },
+      {
+        "command": "loreScm.commitStaged",
+        "title": "Commit Staged",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.commitAll",
+        "title": "Commit All",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.commitAmendMessage",
+        "title": "Amend Last Commit Message…",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.push",
+        "title": "Push",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.sync",
+        "title": "Sync",
+        "category": "Lore SCM",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "loreScm.syncAndPush",
+        "title": "Sync and Push",
+        "category": "Lore SCM",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "loreScm.publishBranch",
+        "title": "Publish Branch",
+        "category": "Lore SCM"
+      },
+      {
+        "command": "loreScm.setIdentity",
+        "title": "Set Identity…",
+        "category": "Lore SCM"
       }
     ],
     "configuration": {
@@ -133,6 +217,37 @@
           "default": true,
           "description": "Refresh a repository's status when the window regains focus, if its last refresh is stale."
         },
+        "loreScm.dirtyDebounceMs": {
+          "type": "number",
+          "default": 300,
+          "description": "How long to wait after file activity settles before telling Lore which files changed."
+        },
+        "loreScm.checkDirtyIntervalSec": {
+          "type": "number",
+          "default": 300,
+          "description": "How often to verify tracked dirty flags against disk in the background. 0 disables this."
+        },
+        "loreScm.enableSmartCommit": {
+          "type": "boolean",
+          "default": false,
+          "description": "When nothing is staged, commit all changes directly instead of asking first."
+        },
+        "loreScm.restageModifiedOnCommit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Before committing, re-stage files that were edited again after being staged."
+        },
+        "loreScm.postCommitCommand": {
+          "type": "string",
+          "enum": ["none", "push", "sync"],
+          "default": "none",
+          "description": "Run push or sync automatically right after a successful commit."
+        },
+        "loreScm.confirmSync": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ask for confirmation before syncing the working tree with the remote branch."
+        },
         "loreScm.statusLimit": {
           "type": "number",
           "default": 10000,
@@ -192,13 +307,36 @@
       "commandPalette": [
         { "command": "loreScm.openFile", "when": "false" },
         { "command": "loreScm.openHEADFile", "when": "false" },
-        { "command": "loreScm.openChange", "when": "false" }
+        { "command": "loreScm.openChange", "when": "false" },
+        { "command": "loreScm.stage", "when": "false" },
+        { "command": "loreScm.unstage", "when": "false" },
+        { "command": "loreScm.discard", "when": "false" },
+        { "command": "loreScm.stageAll", "when": "false" },
+        { "command": "loreScm.unstageAll", "when": "false" },
+        { "command": "loreScm.discardAll", "when": "false" }
       ],
       "scm/title": [
-        { "command": "loreScm.refresh", "when": "scmProvider == loreScm", "group": "navigation" },
-        { "command": "loreScm.rescan", "when": "scmProvider == loreScm", "group": "navigation" }
+        { "command": "loreScm.commit", "when": "scmProvider == loreScm", "group": "navigation@1" },
+        { "command": "loreScm.refresh", "when": "scmProvider == loreScm", "group": "navigation@2" },
+        { "command": "loreScm.syncAndPush", "when": "scmProvider == loreScm", "group": "navigation@3" },
+        { "command": "loreScm.rescan", "when": "scmProvider == loreScm", "group": "navigation@4" },
+        { "command": "loreScm.push", "when": "scmProvider == loreScm" },
+        { "command": "loreScm.sync", "when": "scmProvider == loreScm" },
+        { "command": "loreScm.publishBranch", "when": "scmProvider == loreScm" },
+        { "command": "loreScm.commitStaged", "when": "scmProvider == loreScm" },
+        { "command": "loreScm.commitAll", "when": "scmProvider == loreScm" },
+        { "command": "loreScm.commitAmendMessage", "when": "scmProvider == loreScm" },
+        { "command": "loreScm.setIdentity", "when": "scmProvider == loreScm" }
+      ],
+      "scm/resourceGroup/context": [
+        { "command": "loreScm.stageAll", "when": "scmProvider == loreScm && scmResourceGroup == changes", "group": "inline" },
+        { "command": "loreScm.discardAll", "when": "scmProvider == loreScm && scmResourceGroup == changes", "group": "inline" },
+        { "command": "loreScm.unstageAll", "when": "scmProvider == loreScm && scmResourceGroup == staged", "group": "inline" }
       ],
       "scm/resourceState/context": [
+        { "command": "loreScm.stage", "when": "scmProvider == loreScm && scmResourceGroup == changes", "group": "inline" },
+        { "command": "loreScm.discard", "when": "scmProvider == loreScm && scmResourceGroup == changes", "group": "inline" },
+        { "command": "loreScm.unstage", "when": "scmProvider == loreScm && scmResourceGroup == staged", "group": "inline" },
         { "command": "loreScm.openFile", "when": "scmProvider == loreScm", "group": "navigation" },
         { "command": "loreScm.openHEADFile", "when": "scmProvider == loreScm", "group": "navigation" }
       ]
@@ -240,6 +378,7 @@
     "vitest": "^2.1.8"
   },
   "dependencies": {
-    "@lore-vcs/sdk": "0.10.0"
+    "@lore-vcs/sdk": "0.10.0",
+    "smol-toml": "1.9.0"
   }
 }

@@ -38,6 +38,24 @@ export const config = {
   get autorefresh(): boolean {
     return get('autorefresh', true);
   },
+  get dirtyDebounceMs(): number {
+    return get('dirtyDebounceMs', 300);
+  },
+  get checkDirtyIntervalSec(): number {
+    return get('checkDirtyIntervalSec', 300);
+  },
+  get enableSmartCommit(): boolean {
+    return get('enableSmartCommit', false);
+  },
+  get restageModifiedOnCommit(): boolean {
+    return get('restageModifiedOnCommit', true);
+  },
+  get postCommitCommand(): 'none' | 'push' | 'sync' {
+    return get<'none' | 'push' | 'sync'>('postCommitCommand', 'none');
+  },
+  get confirmSync(): boolean {
+    return get('confirmSync', true);
+  },
   get statusLimit(): number {
     return get('statusLimit', 10000);
   },

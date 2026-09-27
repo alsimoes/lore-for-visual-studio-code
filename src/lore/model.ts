@@ -49,3 +49,17 @@ export interface StatusSnapshot {
   truncated: boolean;
   takenAt: number;
 }
+
+export interface CommitResult {
+  revision: string;
+  revisionNumber: number;
+}
+
+export interface SyncResult {
+  revision: string;
+  revisionNumber: number;
+  /** True when sync produced a staged merge revision rather than fast-forwarding. */
+  merged: boolean;
+  hasConflicts: boolean;
+  conflictedPaths: string[];
+}
