@@ -1,0 +1,42 @@
+[
+  {
+    "userContext": 0,
+    "tag": 126,
+    "tagName": "lockFileQueryBegin",
+    "data": {
+      "count": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 127,
+    "tagName": "lockFileQuery",
+    "data": {
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "path": "asset.bin",
+      "owner": "<unknown>",
+      "lockedAt": 1790530906852
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

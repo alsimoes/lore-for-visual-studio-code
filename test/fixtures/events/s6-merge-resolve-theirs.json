@@ -1,0 +1,68 @@
+[
+  {
+    "userContext": 0,
+    "tag": 103,
+    "tagName": "fileStageBegin",
+    "data": {
+      "pathCount": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 107,
+    "tagName": "fileStageFile",
+    "data": {
+      "fromPath": "",
+      "path": "shared.txt",
+      "action": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 105,
+    "tagName": "fileStageEnd",
+    "data": {
+      "count": {
+        "directoryModifyCount": 0,
+        "directoryAddCount": 0,
+        "directoryDeleteCount": 0,
+        "directoryMoveCount": 0,
+        "fileModifyCount": 1,
+        "fileAddCount": 0,
+        "fileDeleteCount": 0,
+        "fileMoveCount": 0,
+        "totalCount": 1
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 106,
+    "tagName": "fileStageRevision",
+    "data": {
+      "repository": "01a0e3f67cbc7d639a13836c28c688b2",
+      "revision": "0576b82f58af1b4fdf14447fc989192e8ab1390e5000095d31a683527d49c504"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

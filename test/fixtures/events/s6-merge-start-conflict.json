@@ -1,0 +1,136 @@
+[
+  {
+    "userContext": 0,
+    "tag": 44,
+    "tagName": "branchMergeStartBegin",
+    "data": {
+      "branch": "01a0e3f67f417883b086e0c07fd35a38",
+      "revision": "09fdb4fd4de5a2b1e6cccba4d77e431270f0a8b4bd638f4829fcb03d65e7ec6d",
+      "revisionNumber": 2
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 180,
+    "tagName": "revisionSyncProgress",
+    "data": {
+      "fileUpdate": 0,
+      "fileUpdateTotal": 0,
+      "fileDelete": 0,
+      "fileDeleteTotal": 0,
+      "fileAutomerge": 0,
+      "fileConflict": 0,
+      "bytesUpdate": 0,
+      "bytesUpdateTotal": 0,
+      "discoveryComplete": true
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 180,
+    "tagName": "revisionSyncProgress",
+    "data": {
+      "fileUpdate": 0,
+      "fileUpdateTotal": 0,
+      "fileDelete": 0,
+      "fileDeleteTotal": 0,
+      "fileAutomerge": 0,
+      "fileConflict": 0,
+      "bytesUpdate": 0,
+      "bytesUpdateTotal": 0,
+      "discoveryComplete": true
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 179,
+    "tagName": "revisionSyncFile",
+    "data": {
+      "path": "shared.txt",
+      "size": 27,
+      "action": 0,
+      "flagFile": true
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 180,
+    "tagName": "revisionSyncProgress",
+    "data": {
+      "fileUpdate": 0,
+      "fileUpdateTotal": 0,
+      "fileDelete": 0,
+      "fileDeleteTotal": 0,
+      "fileAutomerge": 0,
+      "fileConflict": 1,
+      "bytesUpdate": 0,
+      "bytesUpdateTotal": 0,
+      "discoveryComplete": true
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 180,
+    "tagName": "revisionSyncProgress",
+    "data": {
+      "fileUpdate": 0,
+      "fileUpdateTotal": 0,
+      "fileDelete": 0,
+      "fileDeleteTotal": 0,
+      "fileAutomerge": 0,
+      "fileConflict": 1,
+      "bytesUpdate": 0,
+      "bytesUpdateTotal": 0,
+      "discoveryComplete": true
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 45,
+    "tagName": "branchMergeStartEnd",
+    "data": {
+      "stats": {
+        "fileUpdate": 0,
+        "fileUpdateTotal": 0,
+        "fileDelete": 0,
+        "fileDeleteTotal": 0,
+        "fileAutomerge": 0,
+        "fileConflict": 1,
+        "bytesUpdate": 0,
+        "bytesUpdateTotal": 0,
+        "discoveryComplete": true
+      },
+      "signature": "1a5ac79bba2a949923bb78308bd70ab82df78bd2ed9465c44621d8755ae905a5",
+      "hasConflicts": true
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 29,
+    "tagName": "branchMergeConflictFile",
+    "data": {
+      "path": "shared.txt"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

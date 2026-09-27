@@ -1,0 +1,30 @@
+[
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 9,
+      "error": {
+        "errorCode": 9,
+        "message": "Operation not supported: authentication requires a configured auth endpoint",
+        "traceLocations": [
+          {
+            "file": "lore\\src\\auth.rs",
+            "line": 715,
+            "column": 6,
+            "context": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

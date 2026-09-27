@@ -1,0 +1,61 @@
+[
+  {
+    "userContext": 0,
+    "tag": 153,
+    "tagName": "repositoryStatusRevision",
+    "data": {
+      "repository": "01a0e3ebff297eb099469e3145d4ecf6",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "branchName": "main",
+      "revision": "a995347b39ff6f021b8cd25c2deda657b4ab0bb42a32012777cec6c18ddaf167",
+      "revisionNumber": 2,
+      "revisionStaged": "11a0b3233d8c346dcde3122ae61827868aab1547e0c4c8f8d0d81377b45317f0",
+      "revisionMerged": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionMergedParentBranch": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionLocal": "a995347b39ff6f021b8cd25c2deda657b4ab0bb42a32012777cec6c18ddaf167",
+      "revisionLocalNumber": 2,
+      "revisionRemote": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionRemoteNumber": 0,
+      "isLocalAhead": false,
+      "isRemoteAhead": false,
+      "remoteAvailable": false,
+      "remoteAuthorized": false,
+      "remoteBranchExist": false
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 156,
+    "tagName": "repositoryStatusSummary",
+    "data": {
+      "adds": 0,
+      "deletes": 0,
+      "modifies": 0,
+      "moves": 0,
+      "copies": 0,
+      "hashChecks": 0,
+      "mtimeMatches": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "userContext": 0,
+    "tag": 232,
+    "tagName": "branchPushStats",
+    "data": {
+      "deduplicated": 0,
+      "copied": 0,
+      "put": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 65,
+    "tagName": "branchPush",
+    "data": {
+      "remote": "lore://argoneon:41337",
+      "repository": "01a0e3f2f18c7d01a9be55f5bcce8634",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "branchName": "main",
+      "remoteRevision": "0000000000000000000000000000000000000000000000000000000000000000",
+      "localRevision": "da95e88ffc856dd5c363a4a4e8aba493e688f18d0bcc58bd73abb1d2fe4a0579",
+      "remoteHistory": 0,
+      "localHistory": 1,
+      "flagAlreadyPushed": false,
+      "flagDefault": true,
+      "flagLink": false,
+      "flagLayer": false
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 68,
+    "tagName": "branchPushFragmentBegin",
+    "data": {
+      "fragments": 1,
+      "bytesTotal": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 69,
+    "tagName": "branchPushFragmentProgress",
+    "data": {
+      "complete": 0,
+      "count": 1,
+      "bytesTransferred": 0,
+      "bytesTotal": 124
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 69,
+    "tagName": "branchPushFragmentProgress",
+    "data": {
+      "complete": 1,
+      "count": 1,
+      "bytesTransferred": 124,
+      "bytesTotal": 124
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 70,
+    "tagName": "branchPushFragmentEnd",
+    "data": {
+      "fragments": 1,
+      "bytesTransferred": 124
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 73,
+    "tagName": "branchPushRevisionPushBegin",
+    "data": {
+      "repository": "01a0e3f2f18c7d01a9be55f5bcce8634",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "remoteRevision": "0000000000000000000000000000000000000000000000000000000000000000",
+      "localRevision": "da95e88ffc856dd5c363a4a4e8aba493e688f18d0bcc58bd73abb1d2fe4a0579"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 75,
+    "tagName": "branchPushRevisionPushEnd",
+    "data": {
+      "repository": "01a0e3f2f18c7d01a9be55f5bcce8634",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "oldRemoteRevision": "0000000000000000000000000000000000000000000000000000000000000000",
+      "newRemoteRevision": "da95e88ffc856dd5c363a4a4e8aba493e688f18d0bcc58bd73abb1d2fe4a0579",
+      "newRemoteRevisionNumber": 1,
+      "message": "",
+      "fastForwardMerged": false
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "userContext": 0,
+    "tag": 80,
+    "tagName": "fileInfo",
+    "data": {
+      "path": "a.txt",
+      "context": "01a0e3ed56f671628888b1fad36eee18",
+      "hash": "ad164c4797c66bc35dd2b90cce5d1b6cac005764932ffa8d5cdf2b4d7a1b32fc",
+      "isFile": true,
+      "isDir": false,
+      "flagModified": true,
+      "flagDeleted": false,
+      "flagAdded": false,
+      "flagConflict": false,
+      "mode": 0,
+      "size": 19,
+      "localSize": 27,
+      "localHash": "a9a8115a8b709affcd76e5de328919d4ed2bbff73aea3c7c1ef369cbd2ef328d",
+      "filterSize": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "userContext": 0,
+    "tag": 14,
+    "tagName": "branchListBegin",
+    "data": {
+      "location": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 15,
+    "tagName": "branchListEntry",
+    "data": {
+      "location": 0,
+      "id": "e726318bbc3fd75ac8733a7e030cc35b",
+      "name": "main",
+      "category": "",
+      "latest": "aeb7a3035c592c2a43d0b678867ca3b5e6abd68375d0b1603dd6d00bd2fc5aba",
+      "stack": [],
+      "creator": "",
+      "created": 1790530467818,
+      "isCurrent": true,
+      "archived": false
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 16,
+    "tagName": "branchListEnd",
+    "data": {
+      "location": 0,
+      "count": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

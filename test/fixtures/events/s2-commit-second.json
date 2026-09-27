@@ -1,0 +1,121 @@
+[
+  {
+    "userContext": 0,
+    "tag": 158,
+    "tagName": "revisionCommitBegin",
+    "data": {
+      "unused": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 159,
+    "tagName": "revisionCommitProgress",
+    "data": {
+      "count": {
+        "directoryCount": 2,
+        "directoryTotal": 2,
+        "fileCount": 0,
+        "fileTotal": 2,
+        "directoryDeleteCount": 0,
+        "fileModifyCount": 0,
+        "fileDeleteCount": 0,
+        "bytesTransferred": 0,
+        "bytesTotal": 44,
+        "discoveryComplete": true
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 160,
+    "tagName": "revisionCommitEnd",
+    "data": {
+      "count": {
+        "directoryCount": 2,
+        "directoryTotal": 2,
+        "fileCount": 2,
+        "fileTotal": 2,
+        "directoryDeleteCount": 0,
+        "fileModifyCount": 2,
+        "fileDeleteCount": 0,
+        "bytesTransferred": 36,
+        "bytesTotal": 44,
+        "discoveryComplete": true
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 161,
+    "tagName": "revisionCommitRevision",
+    "data": {
+      "repository": "01a0e3ebff297eb099469e3145d4ecf6",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "revision": "a995347b39ff6f021b8cd25c2deda657b4ab0bb42a32012777cec6c18ddaf167",
+      "revisionNumber": 2,
+      "parent": "c6e8805e34bf7c76dd505986dcee624e9eae282f425654ae110b05f1ba3a8419",
+      "parentOther": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "branch",
+      "value": {
+        "tag": 3,
+        "data": "e726318bbc3fd75ac8733a7e030cc35b",
+        "tagName": "context"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "timestamp",
+      "value": {
+        "tag": 5,
+        "data": 1790530289811,
+        "tagName": "numeric"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "message",
+      "value": {
+        "tag": 6,
+        "data": "second revision",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

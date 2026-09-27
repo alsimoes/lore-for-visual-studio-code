@@ -1,0 +1,47 @@
+[
+  {
+    "userContext": 0,
+    "tag": 153,
+    "tagName": "repositoryStatusRevision",
+    "data": {
+      "repository": "01a0e3eeb7d77092a207174a2a390c69",
+      "branch": "01a0e3eeb8357bc398bbdb2d9b831f3c",
+      "branchName": "feature/x",
+      "revision": "aeb7a3035c592c2a43d0b678867ca3b5e6abd68375d0b1603dd6d00bd2fc5aba",
+      "revisionNumber": 1,
+      "revisionStaged": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionMerged": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionMergedParentBranch": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionLocal": "aeb7a3035c592c2a43d0b678867ca3b5e6abd68375d0b1603dd6d00bd2fc5aba",
+      "revisionLocalNumber": 1,
+      "revisionRemote": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionRemoteNumber": 0,
+      "isLocalAhead": false,
+      "isRemoteAhead": false,
+      "remoteAvailable": false,
+      "remoteAuthorized": false,
+      "remoteBranchExist": false
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

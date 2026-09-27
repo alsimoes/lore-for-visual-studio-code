@@ -1,0 +1,167 @@
+[
+  {
+    "userContext": 0,
+    "tag": 153,
+    "tagName": "repositoryStatusRevision",
+    "data": {
+      "repository": "01a0e3ebff297eb099469e3145d4ecf6",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "branchName": "main",
+      "revision": "c6e8805e34bf7c76dd505986dcee624e9eae282f425654ae110b05f1ba3a8419",
+      "revisionNumber": 1,
+      "revisionStaged": "1c8887665f6d3f6cec858ec7558067295484614a33e6dc3289c0241008b65360",
+      "revisionMerged": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionMergedParentBranch": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionLocal": "c6e8805e34bf7c76dd505986dcee624e9eae282f425654ae110b05f1ba3a8419",
+      "revisionLocalNumber": 1,
+      "revisionRemote": "0000000000000000000000000000000000000000000000000000000000000000",
+      "revisionRemoteNumber": 0,
+      "isLocalAhead": false,
+      "isRemoteAhead": false,
+      "remoteAvailable": false,
+      "remoteAuthorized": false,
+      "remoteBranchExist": false
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 154,
+    "tagName": "repositoryStatusFile",
+    "data": {
+      "path": ".loreignore",
+      "size": 0,
+      "action": 1,
+      "type": 1,
+      "flagStaged": false,
+      "flagMerged": false,
+      "flagConflict": false,
+      "flagConflictUnresolved": false,
+      "flagConflictAutomerged": false,
+      "flagConflictMine": false,
+      "flagConflictTheirs": false,
+      "flagDirty": true,
+      "fromPath": ""
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 154,
+    "tagName": "repositoryStatusFile",
+    "data": {
+      "path": "new.txt",
+      "size": 0,
+      "action": 1,
+      "type": 1,
+      "flagStaged": false,
+      "flagMerged": false,
+      "flagConflict": false,
+      "flagConflictUnresolved": false,
+      "flagConflictAutomerged": false,
+      "flagConflictMine": false,
+      "flagConflictTheirs": false,
+      "flagDirty": true,
+      "fromPath": ""
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 154,
+    "tagName": "repositoryStatusFile",
+    "data": {
+      "path": "sub/nested.txt",
+      "size": 0,
+      "action": 2,
+      "type": 1,
+      "flagStaged": false,
+      "flagMerged": false,
+      "flagConflict": false,
+      "flagConflictUnresolved": false,
+      "flagConflictAutomerged": false,
+      "flagConflictMine": false,
+      "flagConflictTheirs": false,
+      "flagDirty": true,
+      "fromPath": ""
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 154,
+    "tagName": "repositoryStatusFile",
+    "data": {
+      "path": "sub/renamed.txt",
+      "size": 35,
+      "action": 1,
+      "type": 1,
+      "flagStaged": true,
+      "flagMerged": false,
+      "flagConflict": false,
+      "flagConflictUnresolved": false,
+      "flagConflictAutomerged": false,
+      "flagConflictMine": false,
+      "flagConflictTheirs": false,
+      "flagDirty": true,
+      "fromPath": ""
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 154,
+    "tagName": "repositoryStatusFile",
+    "data": {
+      "path": "to-delete.txt",
+      "size": 0,
+      "action": 2,
+      "type": 1,
+      "flagStaged": false,
+      "flagMerged": false,
+      "flagConflict": false,
+      "flagConflictUnresolved": false,
+      "flagConflictAutomerged": false,
+      "flagConflictMine": false,
+      "flagConflictTheirs": false,
+      "flagDirty": true,
+      "fromPath": ""
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 154,
+    "tagName": "repositoryStatusFile",
+    "data": {
+      "path": "tracked.txt",
+      "size": 6,
+      "action": 0,
+      "type": 1,
+      "flagStaged": false,
+      "flagMerged": false,
+      "flagConflict": false,
+      "flagConflictUnresolved": false,
+      "flagConflictAutomerged": false,
+      "flagConflictMine": false,
+      "flagConflictTheirs": false,
+      "flagDirty": true,
+      "fromPath": ""
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]
