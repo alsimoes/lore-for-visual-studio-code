@@ -2,6 +2,8 @@ src/**
 test/**
 scripts/**
 docs/**
+coverage/**
+PLAN.md
 .vscode/**
 .github/**
 **/*.map
