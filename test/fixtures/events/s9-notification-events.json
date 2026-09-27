@@ -1,0 +1,34 @@
+[
+  {
+    "userContext": 0,
+    "tag": 188,
+    "tagName": "notificationSubscribed",
+    "data": {
+      "repository": "01a0e3f4a9bc7f51892bc5406d43ea46"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 185,
+    "tagName": "notificationBranchPushed",
+    "data": {
+      "revision": "ac78a324afe8fb2fa865c99eecce3a83333a68b07d2b4cae6216cded8fc7d830",
+      "revisionNumber": 2,
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "userId": "<unknown>"
+    }
+  }
+]

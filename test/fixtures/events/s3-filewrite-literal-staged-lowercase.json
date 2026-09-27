@@ -1,0 +1,30 @@
+[
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 88,
+      "error": {
+        "errorCode": 88,
+        "message": "revision not found: staged",
+        "traceLocations": [
+          {
+            "file": "lore-revision\\src\\file\\write.rs",
+            "line": 151,
+            "column": 13,
+            "context": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

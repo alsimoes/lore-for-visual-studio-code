@@ -1,0 +1,33 @@
+[
+  {
+    "userContext": 0,
+    "tag": 133,
+    "tagName": "repositoryCreate",
+    "data": {
+      "id": "01a0e3ebff297eb099469e3145d4ecf6",
+      "name": "lore-spike-s2-KJkHZO",
+      "path": "C:/Users/andre/AppData/Local/Temp/lore-spike-s2-KJkHZO"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

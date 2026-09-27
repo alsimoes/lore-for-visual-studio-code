@@ -1,0 +1,188 @@
+[
+  {
+    "userContext": 0,
+    "tag": 166,
+    "tagName": "revisionHistory",
+    "data": {
+      "repository": "01a0e3f3c1707ec1bc38ac9909ee8ea3",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 167,
+    "tagName": "revisionHistoryEntry",
+    "data": {
+      "revision": "f8b650ab1b26638e765cbcb30cf818a7ece69e00b95eaeae6de55842fd05df65",
+      "revisionNumber": 2,
+      "parent": [
+        "efabef97acdea300bbe5f1097b69ea7fc4e08273f4a8b6196c4aec226e70ceca",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ]
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "branch",
+      "value": {
+        "tag": 3,
+        "data": "e726318bbc3fd75ac8733a7e030cc35b",
+        "tagName": "context"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "timestamp",
+      "value": {
+        "tag": 5,
+        "data": 1790530798620,
+        "tagName": "numeric"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "message",
+      "value": {
+        "tag": 6,
+        "data": "second revision",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "created-by",
+      "value": {
+        "tag": 6,
+        "data": "spike-tester",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "committed-by",
+      "value": {
+        "tag": 6,
+        "data": "spike-tester",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 167,
+    "tagName": "revisionHistoryEntry",
+    "data": {
+      "revision": "efabef97acdea300bbe5f1097b69ea7fc4e08273f4a8b6196c4aec226e70ceca",
+      "revisionNumber": 1,
+      "parent": [
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ]
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "branch",
+      "value": {
+        "tag": 3,
+        "data": "e726318bbc3fd75ac8733a7e030cc35b",
+        "tagName": "context"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "timestamp",
+      "value": {
+        "tag": 5,
+        "data": 1790530798381,
+        "tagName": "numeric"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "message",
+      "value": {
+        "tag": 6,
+        "data": "first revision\nwith a body line",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "created-by",
+      "value": {
+        "tag": 6,
+        "data": "spike-tester",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "committed-by",
+      "value": {
+        "tag": 6,
+        "data": "spike-tester",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

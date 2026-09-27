@@ -1,0 +1,86 @@
+[
+  {
+    "userContext": 0,
+    "tag": 103,
+    "tagName": "fileStageBegin",
+    "data": {
+      "pathCount": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 104,
+    "tagName": "fileStageProgress",
+    "data": {
+      "count": {
+        "directoryModifyCount": 0,
+        "directoryAddCount": 0,
+        "directoryDeleteCount": 0,
+        "directoryMoveCount": 0,
+        "fileModifyCount": 0,
+        "fileAddCount": 0,
+        "fileDeleteCount": 0,
+        "fileMoveCount": 0,
+        "totalCount": 0
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 107,
+    "tagName": "fileStageFile",
+    "data": {
+      "fromPath": "",
+      "path": "sub/renamed.txt",
+      "action": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 105,
+    "tagName": "fileStageEnd",
+    "data": {
+      "count": {
+        "directoryModifyCount": 0,
+        "directoryAddCount": 0,
+        "directoryDeleteCount": 0,
+        "directoryMoveCount": 0,
+        "fileModifyCount": 0,
+        "fileAddCount": 1,
+        "fileDeleteCount": 0,
+        "fileMoveCount": 0,
+        "totalCount": 1
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 106,
+    "tagName": "fileStageRevision",
+    "data": {
+      "repository": "01a0e3ebff297eb099469e3145d4ecf6",
+      "revision": "1c8887665f6d3f6cec858ec7558067295484614a33e6dc3289c0241008b65360"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

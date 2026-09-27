@@ -1,0 +1,86 @@
+[
+  {
+    "userContext": 0,
+    "tag": 103,
+    "tagName": "fileStageBegin",
+    "data": {
+      "pathCount": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 104,
+    "tagName": "fileStageProgress",
+    "data": {
+      "count": {
+        "directoryModifyCount": 0,
+        "directoryAddCount": 0,
+        "directoryDeleteCount": 0,
+        "directoryMoveCount": 0,
+        "fileModifyCount": 0,
+        "fileAddCount": 0,
+        "fileDeleteCount": 0,
+        "fileMoveCount": 0,
+        "totalCount": 0
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 107,
+    "tagName": "fileStageFile",
+    "data": {
+      "fromPath": "",
+      "path": "new.txt",
+      "action": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 105,
+    "tagName": "fileStageEnd",
+    "data": {
+      "count": {
+        "directoryModifyCount": 0,
+        "directoryAddCount": 0,
+        "directoryDeleteCount": 0,
+        "directoryMoveCount": 0,
+        "fileModifyCount": 0,
+        "fileAddCount": 1,
+        "fileDeleteCount": 0,
+        "fileMoveCount": 0,
+        "totalCount": 1
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 106,
+    "tagName": "fileStageRevision",
+    "data": {
+      "repository": "01a0e3ebff297eb099469e3145d4ecf6",
+      "revision": "2f932f63630da3b5176def917c74403917e47224e508fed4781a4eaa175c591f"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "userContext": 0,
+    "tag": 103,
+    "tagName": "fileStageBegin",
+    "data": {
+      "pathCount": 3
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 104,
+    "tagName": "fileStageProgress",
+    "data": {
+      "count": {
+        "directoryModifyCount": 0,
+        "directoryAddCount": 0,
+        "directoryDeleteCount": 0,
+        "directoryMoveCount": 0,
+        "fileModifyCount": 0,
+        "fileAddCount": 0,
+        "fileDeleteCount": 0,
+        "fileMoveCount": 0,
+        "totalCount": 0
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 107,
+    "tagName": "fileStageFile",
+    "data": {
+      "fromPath": "",
+      "path": "tracked.txt",
+      "action": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 107,
+    "tagName": "fileStageFile",
+    "data": {
+      "fromPath": "",
+      "path": "to-delete.txt",
+      "action": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 107,
+    "tagName": "fileStageFile",
+    "data": {
+      "fromPath": "",
+      "path": "sub/nested.txt",
+      "action": 1
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 105,
+    "tagName": "fileStageEnd",
+    "data": {
+      "count": {
+        "directoryModifyCount": 0,
+        "directoryAddCount": 1,
+        "directoryDeleteCount": 0,
+        "directoryMoveCount": 0,
+        "fileModifyCount": 0,
+        "fileAddCount": 3,
+        "fileDeleteCount": 0,
+        "fileMoveCount": 0,
+        "totalCount": 4
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 106,
+    "tagName": "fileStageRevision",
+    "data": {
+      "repository": "01a0e3ebff297eb099469e3145d4ecf6",
+      "revision": "ca86e68f2d85d41a98da65dee33a1a99f9a2c7c43e7e3c78bfa47882e23b3efc"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

@@ -1,0 +1,121 @@
+[
+  {
+    "userContext": 0,
+    "tag": 158,
+    "tagName": "revisionCommitBegin",
+    "data": {
+      "unused": 0
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 159,
+    "tagName": "revisionCommitProgress",
+    "data": {
+      "count": {
+        "directoryCount": 1,
+        "directoryTotal": 1,
+        "fileCount": 0,
+        "fileTotal": 1,
+        "directoryDeleteCount": 0,
+        "fileModifyCount": 0,
+        "fileDeleteCount": 0,
+        "bytesTransferred": 0,
+        "bytesTotal": 27,
+        "discoveryComplete": true
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 160,
+    "tagName": "revisionCommitEnd",
+    "data": {
+      "count": {
+        "directoryCount": 1,
+        "directoryTotal": 1,
+        "fileCount": 1,
+        "fileTotal": 1,
+        "directoryDeleteCount": 0,
+        "fileModifyCount": 1,
+        "fileDeleteCount": 0,
+        "bytesTransferred": 27,
+        "bytesTotal": 27,
+        "discoveryComplete": true
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 161,
+    "tagName": "revisionCommitRevision",
+    "data": {
+      "repository": "01a0e3f67cbc7d639a13836c28c688b2",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "revision": "4f42603f0e036d9054420cf747002272d623ff04bfb1f3251d4f4aa1e30882d3",
+      "revisionNumber": 3,
+      "parent": "43e0923e29b2ea6796c5a264c57f8b116f3bb59f5c7f5711c47b29bc59f2107a",
+      "parentOther": "09fdb4fd4de5a2b1e6cccba4d77e431270f0a8b4bd638f4829fcb03d65e7ec6d"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "branch",
+      "value": {
+        "tag": 3,
+        "data": "e726318bbc3fd75ac8733a7e030cc35b",
+        "tagName": "context"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "timestamp",
+      "value": {
+        "tag": 5,
+        "data": 1790530977873,
+        "tagName": "numeric"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 3,
+    "tagName": "metadata",
+    "data": {
+      "key": "message",
+      "value": {
+        "tag": 6,
+        "data": "merge feature into main",
+        "tagName": "string"
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

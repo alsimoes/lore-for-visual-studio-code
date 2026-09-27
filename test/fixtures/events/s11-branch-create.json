@@ -1,0 +1,33 @@
+[
+  {
+    "userContext": 0,
+    "tag": 11,
+    "tagName": "branchCreate",
+    "data": {
+      "name": "feature/x",
+      "latest": "aeb7a3035c592c2a43d0b678867ca3b5e6abd68375d0b1603dd6d00bd2fc5aba",
+      "isCommit": false
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

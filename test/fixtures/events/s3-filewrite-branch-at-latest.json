@@ -1,0 +1,45 @@
+[
+  {
+    "userContext": 0,
+    "tag": 177,
+    "tagName": "revisionResolve",
+    "data": {
+      "repository": "01a0e3ed56ab78b39cc73bbd3d027efb",
+      "branch": "e726318bbc3fd75ac8733a7e030cc35b",
+      "target": 2,
+      "revisionNumber": 0,
+      "revision": "0000000000000000000000000000000000000000000000000000000000000000",
+      "remote": true,
+      "local": true
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 84,
+    "tagName": "fileWrite",
+    "data": {
+      "path": "C:\\Users\\andre\\AppData\\Local\\Temp\\lore-spike-s3-out-Siifb1\\out.bin"
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 2,
+    "tagName": "complete",
+    "data": {
+      "status": 0,
+      "error": {
+        "errorCode": 0,
+        "message": "",
+        "traceLocations": []
+      }
+    }
+  },
+  {
+    "userContext": 0,
+    "tag": 5,
+    "tagName": "end",
+    "data": {
+      "unused": 0
+    }
+  }
+]

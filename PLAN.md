@@ -88,7 +88,7 @@ scheme, and duplicate command IDs would conflict.
 | Merge | `lore branch merge <source>` merges the source into the current branch. Subcommands: `start`, `resolve [mine|theirs]`, `unresolve`, `restart`, `abort`, `into` | `git merge` | Cherry-pick and revert have the same resolve, abort and restart flow. |
 | Reset / discard | `lore reset <paths>` (`file reset`), with `--purge` to delete untracked files and `--revision` | `git restore` | |
 | Locks | `lore lock acquire|status|query|release`. Per branch, per path. **Today they inform rather than enforce** | Git LFS locks | Important for binary assets in game development. |
-| Ignore | `.loreignore` (outbound filter: never staged or committed) | `.gitignore` | Ignored paths are reported by `LORE_EVENT_PATH_IGNORE`. |
+| Ignore | `.loreignore` (outbound filter: never staged or committed) | `.gitignore` | During `repositoryStatus`, ignored paths are reported by `LORE_EVENT_FILTER_EXCLUDE` (`tagName: "filterExclude"`), not `PATH_IGNORE` (verified in Phase 0, spike S2; `docs/spike-findings.md`). |
 | View | `.lore/view`: sparse inbound filter (which subset is on disk) | sparse checkout | Files outside the view aren't on disk. Don't report them as deleted. |
 | Links and layers | Compose other repositories into subtrees (pinned links, overlaid layers) | submodules | Out of scope until Phase 6 (read-only display). |
 | Shared store | A per-machine store deduplicated across working trees | alternates | Transparent to the extension. |
@@ -111,7 +111,7 @@ appear later (§10).
 | Option | Description | Verdict |
 |---|---|---|
 | **A. `@lore-vcs/sdk` (in-process FFI)** | Official JS/TS SDK, published on npm (`0.10.0`). It loads the Lore C library (`lorelib-*.dll/.so/.dylib`) through **koffi**. The library ships in platform packages `@lore-vcs/sdk-amd64-unknown-windows`, `-amd64-unknown-linux`, `-arm64-apple-darwin` and `-arm64-graviton-linux`. The TypeScript types for args, events and enums are generated. Calls are async and stream typed events | **Primary** |
-| **B. `lore` CLI with hidden `--json` flag** | `lore --json <command>` prints one JSON event per line (`{"tagName":"repositoryStatusFile","data":{…}}`). This is the same event model the SDK uses: the CLI is built on the same library. The SDK exports `parseLoreEventJSON()`, which turns these lines into typed `LoreEvent` objects. The flag is **hidden**, so it's not a documented contract | **Fallback backend**, behind the same interface |
+| **B. `lore` CLI with hidden `--json` flag** | `lore --json <command>` prints one JSON event per line (`{"tagName":"repositoryStatusFile","data":{…}}`). This is the same event model the SDK uses: the CLI is built on the same library. `parseLoreEventJSON()` turns these lines into typed `LoreEvent` objects, but is exported from the subpath `@lore-vcs/sdk/types/events`, not the package root (verified in Phase 0, spike S4). It normalizes string enums (e.g. `"action":"add"` → `1`) but does **not** convert the CLI's numeric 0/1 booleans on revision-status fields (e.g. `isLocalAhead`) to real JS booleans — `CliBackend`'s mapping must do that coercion itself. The flag is **hidden**, so it's not a documented contract | **Fallback backend**, behind the same interface |
 | C. Parse human CLI output | Brittle. ADR-00009 explicitly rejects it | Rejected |
 
 ### 3.2 Decision
@@ -156,7 +156,9 @@ appear later (§10).
   `lore.globalCallback(LoreEventTag.LOG, cb)`, `lore.shutdown()` (call it in `deactivate`),
   `lore.setThreadLimit(n)`.
 - **No cancellation API was found.** Long operations (clone, sync, push) can't be cancelled. Show their
-  progress as non-cancellable. Confirm this in Phase 0.
+  progress as non-cancellable. **Confirmed in Phase 0 (spike S12)**: no `cancel`/`abort`/`AbortSignal`
+  API exists in the SDK's type surface outside the domain-specific merge/revert/cherry-pick "abort",
+  which aborts merge *state*, not a running call.
 - **Functions missing from the SDK** (CLI only): cherry-pick, bisect, `branch latest list`,
   `shared-store list`, `completions`, `logfile`. Leave them out, or route them to the CLI backend.
 
@@ -182,8 +184,11 @@ appear later (§10).
 | Auth | `authLoginInteractive({remoteUrl, noBrowser})`, `authLoginWithToken`, `authLogout`, `authList`, `authLocalUserInfo`, `authUserInfo({userIds})` | `AUTH_URL` (`url`), `AUTH_USER_INFO` (`id`, `name`), `AUTH_IDENTITY` |
 | Repository | `repositoryCreate({repositoryUrl})` (with `offline: true`, the URL is just a name), `repositoryClone({repositoryUrl, revision?, view?, useSharedStore?})`, `repositoryInfo`, `repositoryConfigGet` | `REPOSITORY_CREATE`, `REPOSITORY_CLONE_BEGIN` / `PROGRESS` / `END` |
 
-`LoreFileAction` has these values: `KEEP=0`, `ADD=1`, `DELETE=2`, `MOVE=3`, `COPY=4`. The plan assumes that
-**`KEEP` on a dirty or staged file means "modified"**. Verify this in Phase 0 (spike S2).
+`LoreFileAction` has these values: `KEEP=0`, `ADD=1`, `DELETE=2`, `MOVE=3`, `COPY=4`. **Confirmed in
+Phase 0 (spike S2): `KEEP` on a dirty or staged file does mean "modified"**. Also confirmed: a plain
+filesystem rename (not routed through `fileDirtyMove`/`fileStageMove`) scans as an independent
+delete+add pair, never as `MOVE` — the DirtyTracker's explicit move-tracking (§6.3) is required to
+get `R old → new` semantics at all, not an optimization over what scanning would find anyway.
 
 ---
 
@@ -517,10 +522,16 @@ right: `"loreScmDecoration.modifiedResourceForeground": { "dark": "gitDecoration
 **Open question for Phase 0 (S2):** after a file is staged and then edited again, does Lore still show it
 as one node (`flagStaged && flagDirty`)? LEP "modified file tracking" says dirty and staged share **one
 action per node**, and that staging doesn't clear the dirty flag. So `flagDirty` can't be used alone to
-mean "has unstaged edits". If Phase 0 shows no reliable signal, show a staged file **only** in Staged
-Changes. When the user commits, warn if the file's on-disk hash differs from what was staged. Use
-`fileInfo` with `local: true` (it returns `localHash` and `hash`) as the check, or re-stage the file before
-committing (setting `loreScm.restageModifiedOnCommit`, default `true`).
+mean "has unstaged edits". **Phase 0 spike S2 confirmed there's no reliable signal to split them**:
+a staged-then-edited node stays a single `flagStaged && flagDirty` node, and its reported `size`
+(and presumably `hash`) reflects the *staged* content even under `status({scan:true})` — so a naive
+UI would show the wrong size/diff. Show a staged file **only** in Staged Changes. When the user
+commits, warn if the file's on-disk hash differs from what was staged. Use `fileInfo` with
+`local: true` passed as a **global** arg (it returns `localHash`/`localSize` for the live disk
+content alongside `hash`/`size` for the committed revision — there is no separate "staged hash") as
+the check, or re-stage the file before committing (setting `loreScm.restageModifiedOnCommit`,
+default `true` — **this is load-bearing, not just a nicety**, since without it a commit silently
+uses stale staged bytes).
 
 Also:
 - Resource groups use `hideWhenEmpty`. Merge Changes is hidden unless a merge is in progress.
@@ -564,8 +575,11 @@ dirty. The extension is the "IDE change detection" integration that LEP 2026-05-
 - After **any** write operation the extension runs, it refreshes (no scan).
 - Watch `<root>/.lore/**` with a second watcher. On change, **if no operation from the extension is
   running**, schedule a refresh after 500 ms. This catches CLI commands run in the terminal
-  (`lore commit`, `lore sync`, `lore branch switch`). Check in Phase 0 which files under `.lore/` change
-  on each operation, and narrow the glob if possible.
+  (`lore commit`, `lore sync`, `lore branch switch`). **Phase 0 (spike S13) found the glob cannot be
+  narrowed**: `.lore/immutable/` and `.lore/mutable/` are a content-addressed, sharded store, and
+  every operation touches a different, unpredictable set of shard files (including short-lived
+  `*.pending`/`*.new` markers). The debounce is the real defense against watcher noise, not glob
+  narrowing; keep watching the whole `.lore/**` tree.
 - On window focus, refresh if the last refresh is older than 5 s (setting `loreScm.autorefresh`, default
   `true`).
 - Remote state: the status revision event carries `revisionRemote*`, `isRemoteAhead` and
@@ -586,8 +600,11 @@ dirty. The extension is the "IDE change detection" integration that LEP 2026-05-
 - While a write op runs, set `SourceControl.inputBox.enabled = false` and the context key `loreScm.busy`,
   and show `$(sync~spin)` in the status bar item.
 - Expose `onDidRunOperation(op, error?)` so views can refresh.
-- Phase 0 S5 decides whether the extension must also retry on "store busy" errors caused by a concurrent
-  CLI process (exponential backoff, 3 tries).
+- **Phase 0 spike S5**: no "store busy" contention was observed between an SDK call holding
+  `storeKeepAlive` and a concurrent CLI `dirty`/`status`/`stage`/`commit` (interleaved, not
+  necessarily simultaneous — see `docs/spike-findings.md`). Keep the retry-with-backoff for error
+  codes 30/31/32 anyway (§6.14) as cheap insurance the spike couldn't fully rule out under true
+  simultaneous access.
 
 ### 6.6 `lore-scm:` URIs, the file system provider, and quick diff
 
@@ -615,8 +632,10 @@ dirty. The extension is the "IDE change detection" integration that LEP 2026-05-
   view, and for files larger than `loreScm.quickDiffMaxSize` (default 5 MB).
 - Clicking a resource opens:
   - Changes group: `vscode.diff(lore ~HEAD, file:)`, titled `name (Working Tree)`.
-  - Staged group: `vscode.diff(lore ~HEAD, lore ~STAGED)`, titled `name (Staged)`. Fall back to the
-    working file if S3 finds no way to read staged content.
+  - Staged group: `vscode.diff(lore ~HEAD, lore ~STAGED)`, titled `name (Staged)`. **Phase 0 spike S3
+    confirmed there is no `fileWrite` revision keyword for staged content** (`"STAGED"`/`"staged"`
+    both fail with "revision not found") — fall back to the working file (`lore ~HEAD` vs `file:`)
+    for this diff, same as the Changes group. This is required, not just a contingency.
   - Deleted: `vscode.open(lore ~HEAD)`. Added or untracked: `vscode.open(file)`.
   - Setting `loreScm.openDiffOnClick` (default `true`).
 
@@ -676,9 +695,11 @@ dirty. The extension is the "IDE change detection" integration that LEP 2026-05-
 - **Switch:** `branchSwitch({branch})`. With local modifications, Lore may refuse (`LocalModifications`)
   or carry them over. Handle this like sync: offer "Discard and switch" (`reset: true`, modal confirm) or
   Cancel.
-- **Create:** validate the name (non-empty, no whitespace; check the rules in Phase 0), then
-  `branchCreate({branch})`. Phase 0 checks whether create also switches (the CLI quickstart suggests it
-  does). If it doesn't, follow with `branchSwitch`.
+- **Create:** validate the name client-side (non-empty, no whitespace) before calling
+  `branchCreate({branch})` — **Phase 0 spike S11 found the server accepts almost anything** except an
+  empty string (names with spaces, `..`-like segments, and 300-character names were all accepted
+  with no error), so client-side validation is the only real guard. **`branchCreate` already
+  switches to the new branch** (confirmed in S11); no follow-up `branchSwitch` call is needed.
 - **Archive** (Lore's "delete"): confirm, then `branchArchive`. Handle `DeleteCurrent` (48) and
   `DeleteDefault` (49).
 - **Protect / Unprotect:** from the Branches view context menu.
@@ -700,15 +721,24 @@ dirty. The extension is the "IDE change detection" integration that LEP 2026-05-
   - **Unresolve** → `mergeUnresolve`
 - Group actions: **Abort Merge** (`branchMergeAbort`, with confirmation), **Restart Merge**. When all
   conflicts are resolved, the commit input placeholder changes to "Commit merge of <source>".
-- **Phase 0 S6 must establish:** what is on disk for a conflicted text file (conflict markers? your
-  version?), how to read base, mine and theirs, and whether `branchMergeResolve` needs a stage or commit
-  afterwards.
-  - If conflict markers are written, enable VS Code's built-in conflict CodeLens (it works on markers
-    automatically) and the merge editor via `_open.mergeEditor` with `{ base, input1: mine, input2:
-    theirs, output: file }`. Build the input URIs with `lore-scm:` refs `~BASE`, `~MINE` and `~THEIRS`,
-    resolved to hashes (`revision`, `revisionMerged`, and the common ancestor from `branchInfo`
-    `branchPoint`, or `fileDiff({diff3:true})`).
+- **Phase 0 spike S6 confirmed:** conflict markers ARE written to disk, in standard diff3 form
+  (`<<<<<<< ours` / `||||||| original` / `=======` / `>>>>>>> theirs`) — close enough to Git's own
+  `merge=diff3` style that VS Code's built-in conflict CodeLens works with **no custom provider**.
+  `branchMergeResolve`/`ResolveMine`/`ResolveTheirs` rewrite the file and clear the markers, but a
+  `revisionCommit` is still required afterwards to finalize the (two-parent) merge revision.
+  **`fileDiff({diff3:true}) does not work on an in-progress conflicted file`** (it returns only
+  `FILTER_EXCLUDE` events for that path) — don't rely on it for base/mine/theirs. `branchInfo`'s
+  `branchPoint` was only checked on the target branch (where it's legitimately zero); re-verify it
+  on the source branch before depending on it, or derive the common ancestor from the merge
+  revision's two parents instead.
+  - Since markers are already on disk, prefer parsing them directly over building a merge editor
+    input from `fileDiff`/`branchPoint`. If a real 3-way merge editor (not just markers) is still
+    wanted, treat base/mine/theirs URI resolution as its own follow-up spike in Phase 3.
   - For binary conflicts, offer only Mine or Theirs.
+  - **New constraint (spike S6): `branchMergeStart` requires a configured remote**, even to merge
+    two fully local branches in the same working tree — it fails with `NoRemote` (111) on a
+    `repositoryCreate({offline:true})` repository. Branch merge (and likely revert/cherry-pick) is
+    unavailable in a repository with no remote at all; document this in the README.
 - **Revert:** from the History view, `revisionRevert({revision})`. Its conflicts use the same Merge
   Changes UI, wired to the `revisionRevert*` resolve functions. Keep a per-repository `pendingOperation:
   'merge' | 'revert' | undefined` so group actions call the right family.
@@ -738,12 +768,25 @@ dirty. The extension is the "IDE change detection" integration that LEP 2026-05-
   `vscode.d.ts`. Otherwise the History tree view is the deliverable.
 - **Author names:** metadata values `committed-by` / `created-by` are user ids. Resolve them with
   `authUserInfo` (needs the remote and auth), falling back to `authLocalUserInfo`, then to the raw id.
-  Cache the results per session.
+  Cache the results per session. **Phase 0 spike S7 found that on a server with no auth endpoint
+  configured, both `authUserInfo` and `authLocalUserInfo` fail outright** (`NoRemote`/`Operation not
+  supported`) — the raw-id fallback is the common case on such servers, not a rare edge case, so the
+  History view's author display must read well as a raw `identity` string, not just as a name.
+  Metadata values themselves are a tagged union `{tag, tagName, data}` (`tagName` one of `"string"`,
+  `"numeric"`, `"context"` at least) — unwrap `.data` by `tagName` in `eventMapping.ts`.
 - **Timestamp:** the `timestamp` metadata key. Phase 0 S7 determines its type and unit.
 
 ### 6.12 Locks and notifications
 
-Locks matter most for binary assets in game projects. Lore locks are currently **advisory**.
+Locks matter most for binary assets in game projects. Lore locks are currently **advisory** — and
+Phase 0 spike S8 found this is stronger than it sounds: against a demo-style server, a second
+identity could silently re-acquire an already-held lock (`ignored: true`, no error), push a commit
+that edits the locked file with no rejection, and release another identity's lock with **no
+ownership check at all**. Treat the extension's own confirmation dialogs as the *only* real
+protection a user has, not a courtesy layered on top of server-side enforcement. Also: on a server
+with no auth endpoint configured, `lockFileStatus`/`lockFileQuery`'s `owner` field is the literal
+string `"<unknown>"` — handle that as an expected value in the Locks view and lock decorations, not
+an edge case.
 
 - **LockCache** per repository: a `Map<path, LockInfo>` for the current branch, filled by
   `lockQuery({})` (all locks on the branch) on open and every `loreScm.locks.refreshIntervalSec` (default
@@ -1245,12 +1288,12 @@ tokens, publish workflows or tags.
 | **The SDK loads a native library in the extension host.** A crash takes down all extensions | Severe UX impact | Lazy import. Defensive arguments. `loreScm.backend: "cli"` escape hatch. Offer the CLI backend automatically after a load failure |
 | **An official Epic VS Code plugin is on the 2026 roadmap** | Duplicate effort; users may confuse the two | Distinct ID, prefix and scheme (see "Decisions already made" at the top), so the two can coexist. An "Unofficial" disclaimer and no Epic logos. When the official plugin ships, the maintainer decides to discontinue or keep this one. If it's discontinued before publishing, just archive the repo. If it's discontinued after publishing: publish a final version whose README points to the official extension, then deprecate the listing |
 | **Dirty tracking relies on file watcher events**, which `files.watcherExclude`, network drives or huge trees can drop | Missed changes | Periodic `checkDirty`, a manual rescan, and a "changes found by scan that the watcher missed" hint |
-| Staged-then-edited files may not be distinguishable (S2) | Wrong commit content | Re-stage on commit (§6.2) |
-| Conflict mechanics unknown until S6 | The merge UX may need a redesign | Phase 0 before Phase 3. Fall back to mine/theirs-only resolution |
+| **Confirmed (S2):** staged-then-edited files are not distinguishable, and even report the staged (not disk) size under a scan | Wrong commit content, wrong displayed size | Re-stage on commit, default `true` (§6.2) |
+| **Resolved (S6):** conflict mechanics — markers on disk, diff3-compatible, commit still required, but merge needs a configured remote even for local-only branches | N/A | See §6.10 and `docs/spike-findings.md` |
 | No win32-arm64 / darwin-x64 SDK builds | Some future users lack the SDK path | Universal VSIX with the CLI backend (when publishing starts) |
 | The zero-config server's store is temporary (cleared on reboot) | Lost work while dogfooding | Use the persistent dev server (`start-dev-server.ps1`) for real work, and the throwaway server only for tests |
-| Locks are advisory today | Users may expect enforcement | Wording ("informs, doesn't prevent"). Warn-on-edit |
-| Concurrency with the CLI or the Lore service (S5, S14) | Store lock errors | Retry with backoff. Consider `storeKeepAlive` only if S5 proves it's safe |
+| **Confirmed worse than assumed (S8):** locks are advisory — any identity can silently steal-acquire or release another identity's lock, with no ownership check observed | Users may expect enforcement | Wording ("informs, doesn't prevent"). Warn-on-edit is the *only* real protection, not a courtesy |
+| Concurrency with the CLI (S5: no contention observed, but interleaved not simultaneous) or the Lore service (S14: not tested, starting the service would reconfigure the maintainer's machine — see §11.6) | Store lock errors | Retry with backoff regardless, as cheap insurance |
 
 Former open decisions (ID, prefix, distribution, platform, server, license, git workflow) are now resolved; see "Decisions already made"
 at the top of this document. Remaining items to settle when publishing starts (§9.2): the extension icon and the Open VSX namespace
